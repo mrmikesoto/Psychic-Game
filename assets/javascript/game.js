@@ -1,37 +1,65 @@
   // Let's start by grabbing a reference to the <span> below.
-  var userChoice = document.getElementById("user-choice");
-  var compChoice = document.getElementById("comp-choice");
-  var showTies = document.getElementById("ties");
-  var showWins = document.getElementById("wins");
-  var showLosses = document.getElementById("losses");
 
+  var choices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+  var usedUp = [];
+  var compResult = choices[parseInt(Math.random()*choices.length)];
+  console.log(compResult);
 
-  var ties = 0;
+  // var totalGuesses = 10;
+  var guesses = 10;
   var wins = 0;
   var losses = 0;
   // Next, we give JavaScript a function to execute when onkeyup event fires.
   document.onkeyup = function(event) {
-    
+    var totalGuesses = document.getElementById("guesses");
+    var userChoice = document.getElementById("user-guess");;
+    var showWins = document.getElementById("wins");
+    var showLosses = document.getElementById("losses");
+    var alreadyUsed = document.getElementById("used");
     var userKey = event.key;
-    var choices = ["r", "s", "p"];
     
-    if (userKey === "r" || userKey === "s" || userKey === "p"){
-      userChoice.textContent = event.key;
-      var compResult = choices[parseInt(Math.random()*choices.length)];
-      console.log(compResult);
-      compChoice.textContent = compResult;
-
-      if(userKey === compResult){
-        ties++;
-        showTies.textContent = ties;
+    
+      if (choices.indexOf(userKey) >= 0 && usedUp.indexOf(userKey) < 0){      
+        usedUp.push(userKey);
+        alreadyUsed.textContent = "";
+        guesses--;
+        totalGuesses.textContent = guesses;
+        if(userChoice.textContent === "You Win! Try Again " || userChoice.textContent === "You Lose, Try Again "){
+        userChoice.textContent = "";
+        userChoice.textContent += userKey + ", ";
+        }
+        else {
+          userChoice.textContent += userKey + ", ";
+        }
+      
+        if(userKey === compResult){
+          wins++;
+          showWins.textContent = wins;
+          userChoice.textContent = "You Win! Try Again ";
+          compResult = choices[parseInt(Math.random()*choices.length)];
+          console.log(compResult);
+          guesses = 10;
+          usedUp = [];
+          return;
+        }
+                
+        if(guesses <= 0) {
+          losses++;
+          showLosses.textContent = losses;
+          userChoice.textContent = "You Lose, Try Again ";
+          compResult = choices[parseInt(Math.random()*choices.length)];
+          console.log(compResult);
+          guesses = 10;
+          usedUp = [];
+          return;
+        }
       }
-      else if (userKey === "r" && compResult === "p" || userKey === "s" && compResult === "r" || userKey === "p" && compResult === "s"){
-        losses++;
-        showLosses.textContent = losses;
+      else if(choices.indexOf(userKey) < 0){
+        alreadyUsed.textContent = "That is not a valid character";
       }
       else {
-        wins++;
-        showWins.textContent = wins;
+        alreadyUsed.textContent = "Oops! You already used the letter: " + userKey;
       }
-    }
+    
+    
   };
