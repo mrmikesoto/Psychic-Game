@@ -16,6 +16,7 @@
     var showWins = document.getElementById("wins");
     var showLosses = document.getElementById("losses");
     var alreadyUsed = document.getElementById("used");
+    var winLose = document.getElementById("winLose");
     var userKey = event.key;
     
     
@@ -24,9 +25,10 @@
         alreadyUsed.textContent = "";
         guesses--;
         totalGuesses.textContent = guesses;
-        if(userChoice.textContent === "You Win! Try Again " || userChoice.textContent === "You Lose, Try Again "){
-        userChoice.textContent = "";
-        userChoice.textContent += userKey + ", ";
+        if(winLose.textContent === "You Win! Try Again " || winLose.textContent === "You Lose, Try Again "){
+          winLose.textContent = "";
+          userChoice.textContent = "";
+          userChoice.textContent += userKey + ", ";
         }
         else {
           userChoice.textContent += userKey + ", ";
@@ -35,7 +37,7 @@
         if(userKey === compResult){
           wins++;
           showWins.textContent = wins;
-          userChoice.textContent = "You Win! Try Again ";
+          winLose.textContent = "You Win! Try Again ";
           compResult = choices[parseInt(Math.random()*choices.length)];
           console.log(compResult);
           guesses = 10;
@@ -46,7 +48,7 @@
         if(guesses <= 0) {
           losses++;
           showLosses.textContent = losses;
-          userChoice.textContent = "You Lose, Try Again ";
+          winLose.textContent = "You Lose, Try Again ";
           compResult = choices[parseInt(Math.random()*choices.length)];
           console.log(compResult);
           guesses = 10;
